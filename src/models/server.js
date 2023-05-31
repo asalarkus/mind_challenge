@@ -5,6 +5,8 @@ const config = require('../config');
 const swagger_js_doc = require('swagger-jsdoc');
 const swagger_ui = require('swagger-ui-express');
 
+const { dbConnection } = require('../database/config');
+
 const env = config.ENV;
 
 let swagger_options = {
@@ -58,7 +60,7 @@ class Server {
         }
 
         //Connect to database
-        //this.dbConnect();
+        this.dbConnect();
 
         /**
          * Setup configuration of middlewares for express
@@ -74,7 +76,7 @@ class Server {
     }
 
     async dbConnect() {
-        //await dbConnection();
+        await dbConnection();
     }
 
     /**
