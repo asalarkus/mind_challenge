@@ -11,10 +11,10 @@ let swagger_options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Shopify Service Layer API',
-            description: 'Shopify Service Layer API Docs',
+            title: 'Mind`s Challenge API',
+            description: 'Mind`s Challenge API Docs',
             termsOfService: 'https://www.framatech.com/policies/privacy-policy',
-            version: '1.0.1'
+            version: '0.0.1'
         },
         servers: []
     }, 
@@ -97,35 +97,8 @@ class Server {
      * Exposing routes on server.
      */
     routes(){
-        this.app.get('/api', (req, res)=>{
-            res.json({
-                "msg": "get API"
-            })
-        })
-
-        this.app.put('/api', (req, res)=>{
-            res.status(400).json({
-                "msg": "put API"
-            })
-        })
-
-        this.app.post('/api', (req, res)=>{
-            res.status(201).json({
-                "msg": "post API"
-            })
-        })
-
-        this.app.delete('/api', (req, res)=>{
-            res.json({
-                "msg": "delete API"
-            })
-        })
-
-        this.app.patch('/api', (req, res)=>{
-            res.json({
-                "msg": "patch API"
-            })
-        })
+        this.app.use(this.paths.index, require('../routes/index'));
+        this.app.use(this.paths.swagger, swagger_ui.serve, swagger_ui.setup(this.swagger_docs, swagger_options));
     }
 
     /**
