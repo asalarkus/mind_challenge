@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const config = require('../config');
 
 /**
  * Class server to manage instances.
@@ -13,7 +14,7 @@ class Server {
         /**
          * Using port variable to setup env on server
          */
-        this.port = process.env.PORT;
+        this.port = config.PORT;
 
         /**
          * Setup configuration of middlewares for express
@@ -81,7 +82,7 @@ class Server {
      */
     listen(){
         this.app.listen(this.port, ()=>{
-            console.log("Server running on port, ", this.port);
+            console.log("Server running on port ", this.port);
         })
     }
 }

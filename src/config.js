@@ -1,0 +1,12 @@
+const { config }  = require('dotenv');
+const path =  `${process.env.NODE_ENV}.env`;
+config({ path });
+console.log("🚀 ~ file: config.js:4 ~ path:", path)
+
+/**
+ * Config file to export enviroment variables to server.
+ */
+module.exports = {
+    ENV: process.env.ENV,
+    PORT: process.env.PORT || 3000,
+}
