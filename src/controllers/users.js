@@ -24,7 +24,6 @@ const usersGet = async(req = request, res = response) => {
 const usersGetById = async(req = request, res = response) => {
 
     const { id } = req.params;
-    console.log("🚀 ~ file: users.js:27 ~ usersGetById ~ id:", id)
     
     try {
         const user = await User.findById(id);

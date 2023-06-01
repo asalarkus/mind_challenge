@@ -28,7 +28,7 @@ router.get('/', [
 
 router.get('/:id', [
     validateJWT,
-    hasRole("SUPER", "COMMON"),
+    hasRole("SUPER", "ADMIN", "COMMON"),
     check('id', 'is not a valid Id').isMongoId(),
     check('id').custom( existsUserById ),
     validateFields

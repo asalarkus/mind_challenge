@@ -13,6 +13,7 @@ const login = async(req, res = response) =>{
 
         //Check if email exists
         const user = await User.findOne({ email });
+        console.log("🚀 ~ file: auth.js:16 ~ login ~ user:", user)
 
         if( !user ){
             return res.status(400).json({
@@ -44,7 +45,8 @@ const login = async(req, res = response) =>{
         res.json({
             success: true,
             token,
-            role: user.role
+            role: user.role,
+            uid: user._id
         })
     } catch (error) {
         console.log("🚀 ~ file: auth.js:13 ~ login ~ error:", error)
