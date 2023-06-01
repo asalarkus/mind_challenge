@@ -8,7 +8,6 @@ const { generateJWT } = require('../helpers/generate-jwt')
 const login = async(req, res = response) =>{
 
     const { email, password } = req.body;
-    console.log("🚀 ~ file: auth.js:11 ~ login ~ email, password:", email, password)
 
     try {
 
@@ -44,7 +43,8 @@ const login = async(req, res = response) =>{
     
         res.json({
             success: true,
-            token
+            token,
+            role: user.role
         })
     } catch (error) {
         console.log("🚀 ~ file: auth.js:13 ~ login ~ error:", error)
