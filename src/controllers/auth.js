@@ -8,12 +8,12 @@ const { generateJWT } = require('../helpers/generate-jwt')
 const login = async(req, res = response) =>{
 
     const { email, password } = req.body;
+    console.log("🚀 ~ file: auth.js:11 ~ login ~ req.body:", req.body)
 
     try {
 
         //Check if email exists
         const user = await User.findOne({ email });
-        console.log("🚀 ~ file: auth.js:16 ~ login ~ user:", user)
 
         if( !user ){
             return res.status(400).json({
