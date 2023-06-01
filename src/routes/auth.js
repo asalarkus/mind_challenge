@@ -2,7 +2,10 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { login } = require('../controllers/auth');
+const { usersPost } = require('../controllers/users') 
 const { validateFields } = require('../middlewares/validate-fields');
+
+const { isValidRole, emailExists, existsUserById } = require('../helpers/db-validators');
 
 const router = Router();
 
@@ -34,10 +37,26 @@ const router = Router();
  *                           message NO AUTHORIZE
  *
  */
-router.post('/login', [
+router.post('/sign-in', [
     check('email', "Email is required").isEmail(),
     check('password', "Password is required").not().isEmpty(),
     validateFields
 ], login);
+
+
+router.post('/sign-up', [
+    /*validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),*/
+    check('name', 'Name is required').not().isEmpty(),
+    check('password', 'Password needs to be more than 6 characters').isLength({ min: 6 }),
+    check('email', 'Emails is not valid').isEmail(),
+    check('email').custom( emailExists ),
+    check('role').custom( isValidRole ),
+    /*check('english_level').custom( isValidRole ),
+    check('tech_skills').custom( isValidRole ),
+    check('cv_link').custom( isValidRole ), */
+    validateFields
+], usersPost);
 
 module.exports = router;

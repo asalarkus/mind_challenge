@@ -14,6 +14,20 @@ const UserSchema = Schema({
         type: String,
         required: [true, 'Password is required']
     },
+    english_level: {
+        type: Number,
+        min: 1,
+        max: 5,
+        required: [true, 'English Level is required']
+    },
+    tech_skills: { 
+        type: String,
+        required: [true, 'Tech skills is required']
+    },
+    cv_link: {
+        type: String,
+        required: [true, 'CV Link is required']
+    },
     role: {
         type: String,
         required: true,

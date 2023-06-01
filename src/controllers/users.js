@@ -38,8 +38,8 @@ const usersGetById = async(req = request, res = response) => {
 
 const usersPost = async(req, res = response) => {
     
-    const { name, email, password, role } = req.body;
-    const user = new User({ name, email, password, role });
+    const { name, email, password, role, english_level, tech_skills, cv_link } = req.body;
+    const user = new User({ name, email, password, role, english_level, tech_skills, cv_link });
     console.log("🚀 ~ file: users.js:28 ~ usersPost ~ user:", user)
 
     // Encriptar la contraseña
