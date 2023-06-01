@@ -1,8 +1,9 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const User = require('../models/user');
 
-const validateJWT = (req = request , res = response, next )=>{
+const validateJWT = async(req = request , res = response, next )=>{
     const token = req.header('Authorization');
     console.log("🚀 ~ file: validate-jwt.js:6 ~ validateJWT ~ token:", token)
 
@@ -15,8 +16,24 @@ const validateJWT = (req = request , res = response, next )=>{
     try {
 
         const { uid } = jwt.verify( token, config.SECRETORPRIVATEKEY );
-        
-        req.uid = uid;
+
+        //Read user by uid
+        const user = await User.findById( uid );
+
+        if( !user ){
+            return res.status(401).json({
+                msg: 'No valid Token - User does not exists'
+            })
+        }
+
+        // Verify if uid has status in tru
+        if( !user.status ){
+            return res.status(401).json({
+                msg: 'No valid Token - status:false'
+            })
+        }
+
+        req.user = user;
 
         next();
     } catch (err) {
