@@ -58,7 +58,8 @@ class Server {
         this.paths = {
             index: `/api/${version}/index`,
             swagger: `/api/${version}/docs`,
-            users: `/api/${version}/users`
+            users: `/api/${version}/users`,
+            auth: `/api/${version}/auth`
         }
 
         //Connect to database
@@ -101,6 +102,7 @@ class Server {
      * Exposing routes on server.
      */
     routes(){
+        this.app.use( this.paths.auth, require('../routes/auth'));
         this.app.use(this.paths.swagger, swagger_ui.serve, swagger_ui.setup(this.swagger_docs, swagger_options));
         this.app.use(this.paths.index, require('../routes/index'));
         this.app.use( this.paths.users, require('../routes/users'));

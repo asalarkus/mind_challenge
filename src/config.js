@@ -10,5 +10,6 @@ module.exports = {
     ENV: process.env.ENV,
     PORT: process.env.PORT || 3000,
     VERSION: process.env.VERSION,
-    MONGO_ATLAS_URI: process.env.MONGO_ATLAS_URI
+    MONGO_ATLAS_URI: process.env.MONGO_ATLAS_URI,
+    SECRETORPRIVATEKEY: process.env.SECRETORPRIVATEKEY
 }
