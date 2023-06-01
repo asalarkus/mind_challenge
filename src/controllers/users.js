@@ -21,6 +21,21 @@ const usersGet = async(req = request, res = response) => {
     });
 }
 
+const usersGetById = async(req = request, res = response) => {
+
+    const { id } = req.params;
+    console.log("🚀 ~ file: users.js:27 ~ usersGetById ~ id:", id)
+    
+    try {
+        const user = await User.findById(id);
+        res.json({
+            user
+        });
+    } catch (error) {
+        res.json(error)
+    }
+}
+
 const usersPost = async(req, res = response) => {
     
     const { name, email, password, role } = req.body;
@@ -79,6 +94,7 @@ const usersDelete = async(req, res = response) => {
 
 module.exports = {
     usersGet,
+    usersGetById,
     usersPost,
     usersPut,
     usersPatch,

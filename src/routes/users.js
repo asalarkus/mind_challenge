@@ -9,6 +9,7 @@ const { isSuperAdminRole, hasRole } = require('../middlewares/validate-roles');
 const { isValidRole, emailExists, existsUserById } = require('../helpers/db-validators');
 
 const { usersGet,
+        usersGetById,
         usersPut,
         usersPost,
         usersDelete,
@@ -16,9 +17,24 @@ const { usersGet,
 
 const router = Router();
 
-router.get('/', usersGet );
+router.get('/', [
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),
+], usersGet );
+
+router.get('/:id', [
+    validateJWT,
+    hasRole("SUPER", "COMMON"),
+    check('id', 'is not a valid Id').isMongoId(),
+    check('id').custom( existsUserById ),
+    validateFields
+], usersGetById );
 
 router.put('/:id',[
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),
     check('id', 'is not a valid Id').isMongoId(),
     check('id').custom( existsUserById ),
     check('role').custom( isValidRole ), 
@@ -26,6 +42,9 @@ router.put('/:id',[
 ], usersPut );
 
 router.post('/',[
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),
     check('name', 'Name is required').not().isEmpty(),
     check('password', 'Password needs to be more than 6 characters').isLength({ min: 6 }),
     check('email', 'Emails is not valid').isEmail(),
@@ -43,6 +62,9 @@ router.delete('/:id',[
     validateFields
 ],usersDelete );
 
-router.patch('/', usersPatch );
+router.patch('/',[
+    validateJWT,
+    hasRole("SUPER", "ADMIN", "COMMON"),
+], usersPatch );
 
 module.exports = router;

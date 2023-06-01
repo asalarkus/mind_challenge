@@ -30,9 +30,9 @@ const hasRole = ( ...roles ) =>{
                 msg: `This service needs one of these roles ${roles}`
             })
         }
+        
+        next();
     }
-
-    next();
 }
 
 module.exports = {
