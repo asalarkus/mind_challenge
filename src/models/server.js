@@ -8,6 +8,7 @@ const swagger_ui = require('swagger-ui-express');
 const { dbConnection } = require('../database/config');
 
 const env = config.ENV;
+const version = config.VERSION;
 
 let swagger_options = {
     definition: {
@@ -55,9 +56,9 @@ class Server {
         this.server = require('http').createServer(this.app);
 
         this.paths = {
-            index: '/api/index',
-            swagger: '/api/docs',
-            users: '/api/users'
+            index: `/api/${version}/index`,
+            swagger: `/api/${version}/docs`,
+            users: `/api/${version}/users`
         }
 
         //Connect to database
