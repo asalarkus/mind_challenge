@@ -12,19 +12,26 @@ const router = Router();
 
 /**
  * @swagger
- * /api/auth/login:
- *   get:
- *     summary: Allow to consult if server is running and ready for consult.
+ * /api/v1/auth/sign-in:
+ *   post:
+ *     summary: Used to login as a user, needs to send email and password.
  *     tags:
- *      - Index
+ *      - AUTH
+ *     description: Allow to init session as user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Login'
  *     responses:
  *          '200':
- *              description: The request was made and the server responded with
- *                  a status code it's resolved by a 2xx status with the data
- *                  from service layer
+ *             description: The request was made and the server responded with
+ *                 a status code it's resolved by a 2xx status with the data
+ *                 from service layer
  *          '400':
  *              description: The request was made and the server responded with
- *                          a status code that falls out of the range of 2xx from
+ *                          a status code that falls out of the range of 2xxfrom
  *                          the service layer data
  *          '500':
  *              description: The request was made but no response was *
@@ -36,6 +43,23 @@ const router = Router();
  *                           access to endpoint and data, result auth false,
  *                           message NO AUTHORIZE
  *
+*/
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Login:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: User email.
+ *           example: asalcido@arkusnexus.com
+ *         password:
+ *           type: string
+ *           description: Password using to login on service.
+ *           example: hola123
  */
 router.post('/sign-in', [
     check('email', "Email is required").isEmail(),
@@ -44,6 +68,77 @@ router.post('/sign-in', [
 ], login);
 
 
+/**
+ * @swagger
+ * /api/v1/auth/sign-up:
+ *   post:
+ *     summary: Used to register a new user on database.
+ *     tags:
+ *      - AUTH
+ *     description: Allow to create a new user on database.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SignUp'
+ *     responses:
+ *          '200':
+ *             description: The request was made and the server responded with
+ *                 a status code it's resolved by a 2xx status with the data
+ *                 from service layer
+ *          '400':
+ *              description: The request was made and the server responded with
+ *                          a status code that falls out of the range of 2xxfrom
+ *                          the service layer data
+ *          '500':
+ *              description: The request was made but no response was *
+ *                           received, `error.request` is an instance
+ *                           of XMLHttpRequest in the browser and an instance
+ *                           of http.ClientRequest in Node.js
+ *          '403':
+ *              description: Error on authentication with token from user to
+ *                           access to endpoint and data, result auth false,
+ *                           message NO AUTHORIZE
+ *
+*/
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SignUp:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: User name.
+ *           example: Jose Dominguez
+ *         email:
+ *           type: string
+ *           description: User email.
+ *           example: jdominguez@arkusnexus.com
+ *         password:
+ *           type: string
+ *           description: Password using to login on service.
+ *           example: hola123
+ *         role:
+ *           type: string
+ *           description: User role needs to be ADMIN or COMMON.
+ *           example: ADMIN
+ *         english_level:
+ *           type: number
+ *           description: User english level, needs to be a number between 1 to 5.
+ *           example: 3
+ *         tech_skills:
+ *           type: string
+ *           description: User tech skills.
+ *           example: "JS, TS, Mongo, Express, Postgresql"
+ *         cv_link:
+ *           type: string
+ *           description: User curriculum vitae link.
+ *           example: "https://www.linkedin.com/in/alonsosalcido/"
+ */
 router.post('/sign-up', [
     /*validateJWT,
     isSuperAdminRole,
