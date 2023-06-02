@@ -7,7 +7,7 @@ const router = Router();
  * @swagger
  * /api/index/run:
  *   get:
- *     summary: Allow to consult if server is running and ready for consult.
+ *     summary: Allow to consult if server is running and ready to make requests.
  *     tags:
  *      - Index
  *     responses:
