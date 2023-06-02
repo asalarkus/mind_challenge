@@ -19,6 +19,18 @@ let swagger_options = {
             termsOfService: 'https://www.framatech.com/policies/privacy-policy',
             version: '0.0.1'
         },
+        components: {
+        securitySchemes: {
+            bearerAuth: {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT',
+            }
+        }
+        },
+        security: [{
+            bearerAuth: []
+        }],
         servers: []
     }, 
     apis: [`${path.join(__dirname, "../routes/*")}`]
@@ -26,12 +38,12 @@ let swagger_options = {
 
 if (env === 'dev') {
     swagger_options.definition.servers[0] = {
-        url: `http://localhost:${config.PORT}`,
+        url: `http://localhost:${config.PORT}/`,
         description: 'Local server'
     }
 } else {
     swagger_options.definition.servers[0] = {
-        url: '',
+        url: config.DOMAIN,
         description: 'Production server'
     }
 } 

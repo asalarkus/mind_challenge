@@ -16,7 +16,7 @@ const router = Router();
  *   post:
  *     summary: Used to login as a user, needs to send email and password.
  *     tags:
- *      - AUTH
+ *      - Auth
  *     description: Allow to init session as user.
  *     requestBody:
  *       required: true
@@ -74,7 +74,7 @@ router.post('/sign-in', [
  *   post:
  *     summary: Used to register a new user on database.
  *     tags:
- *      - AUTH
+ *      - Auth
  *     description: Allow to create a new user on database.
  *     requestBody:
  *       required: true

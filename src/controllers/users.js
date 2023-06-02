@@ -38,6 +38,7 @@ const usersGetById = async(req = request, res = response) => {
 const usersPost = async(req, res = response) => {
     
     const { name, email, password, role, english_level, tech_skills, cv_link } = req.body;
+    console.log("🚀 ~ file: users.js:41 ~ usersPost ~ req.body:", req.body)
     const user = new User({ name, email, password, role, english_level, tech_skills, cv_link });
     console.log("🚀 ~ file: users.js:28 ~ usersPost ~ user:", user)
 
@@ -49,6 +50,7 @@ const usersPost = async(req, res = response) => {
     await user.save();
 
     res.json({
+        success:true,
         user
     });
 }
@@ -56,7 +58,7 @@ const usersPost = async(req, res = response) => {
 const usersPut = async(req, res = response) => {
 
     const { id } = req.params;
-    const { _id, password, correo, ...rest } = req.body;
+    const { _id, password, email, ...rest } = req.body;
 
     if ( password ) {
         // Encriptar la contraseña

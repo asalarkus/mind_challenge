@@ -9,6 +9,7 @@ console.log("🚀 ~ file: config.js:4 ~ path:", path)
 module.exports = {
     ENV: process.env.ENV,
     PORT: process.env.PORT || 3000,
+    DOMAIN: process.env.DOMAIN,
     VERSION: process.env.VERSION,
     MONGO_ATLAS_URI: process.env.MONGO_ATLAS_URI,
     SECRETORPRIVATEKEY: process.env.SECRETORPRIVATEKEY

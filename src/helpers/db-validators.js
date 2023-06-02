@@ -11,16 +11,16 @@ const isValidRole = async(role = '') => {
 
 const emailExists = async( email = '' ) => {
 
-    // Verificar si el correo existe
+    // Verificar if email exists
     const existsEmail = await User.findOne({ email });
     if ( existsEmail ) {
-        throw new Error(`This email: ${ correo }, is already registered`);
+        throw new Error(`This email: ${ email }, is already registered`);
     }
 }
 
 const existsUserById = async( id ) => {
 
-    // Verificar si el correo existe
+    // Verificar if email existe
     const existsUser = await User.findById(id);
     if ( !existsUser ) {
         throw new Error(`This id ${ id } is not exists.`);
