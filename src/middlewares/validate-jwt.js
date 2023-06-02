@@ -4,7 +4,12 @@ const config = require('../config');
 const User = require('../models/user');
 
 const validateJWT = async(req = request , res = response, next )=>{
-    const token = req.header('Authorization');
+    let token = req.header('Authorization');
+
+    if (token && token.startsWith('Bearer ')) {
+        // Remove "Bearer " from the authHeader
+        token = token.slice(7, token.length);
+    }
 
     if( !token ){
         return res.status(401).json({

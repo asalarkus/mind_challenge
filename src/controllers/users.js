@@ -42,11 +42,11 @@ const usersPost = async(req, res = response) => {
     const user = new User({ name, email, password, role, english_level, tech_skills, cv_link });
     console.log("🚀 ~ file: users.js:28 ~ usersPost ~ user:", user)
 
-    // Encriptar la contraseña
+    // Encrypt password
     const salt = bcryptjs.genSaltSync();
     user.password = bcryptjs.hashSync( password, salt );
 
-    // Guardar en BD
+    // Save on DB
     await user.save();
 
     res.json({
