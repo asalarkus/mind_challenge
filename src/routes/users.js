@@ -108,6 +108,13 @@ router.get('/:id', [
  *        description: Numeric Id of user to get
  *     tags:
  *      - Users
+ *     description: Allow to create a new user on database.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostUser'
  *     responses:
  *          '200':
  *              description: The request was made and the server responded with
@@ -134,7 +141,6 @@ router.put('/:id',[
     hasRole("SUPER", "ADMIN"),
     check('id', 'is not a valid Id').isMongoId(),
     check('id').custom( existsUserById ),
-    check('role').custom( isValidRole ), 
     validateFields
 ], usersPut );
 
@@ -145,6 +151,13 @@ router.put('/:id',[
  *     summary: Allow to create a new user.
  *     tags:
  *      - Users
+ *     description: Allow to create a new user on database.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PostUser'
  *     responses:
  *          '200':
  *              description: The request was made and the server responded with
@@ -164,6 +177,43 @@ router.put('/:id',[
  *                           access to endpoint and data, result auth false,
  *                           message NO AUTHORIZE
  *
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     PostUser:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: User name.
+ *           example: Jose Dominguez
+ *         email:
+ *           type: string
+ *           description: User email.
+ *           example: jdominguez@arkusnexus.com
+ *         password:
+ *           type: string
+ *           description: Password using to login on service.
+ *           example: hola123
+ *         role:
+ *           type: string
+ *           description: User role needs to be ADMIN or COMMON.
+ *           example: ADMIN
+ *         english_level:
+ *           type: number
+ *           description: User english level, needs to be a number between 1 to 5.
+ *           example: 3
+ *         tech_skills:
+ *           type: string
+ *           description: User tech skills.
+ *           example: "JS, TS, Mongo, Express, Postgresql"
+ *         cv_link:
+ *           type: string
+ *           description: User curriculum vitae link.
+ *           example: "https://www.linkedin.com/in/alonsosalcido/"
  */
 router.post('/',[
     /*validateJWT,
