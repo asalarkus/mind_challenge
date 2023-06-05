@@ -4,7 +4,7 @@ const cors = require('cors');
 const config = require('../config');
 const swagger_js_doc = require('swagger-jsdoc');
 const swagger_ui = require('swagger-ui-express');
-
+const { logger, morganMiddleware } = require('../middlewares');
 const { dbConnection } = require('../database/config');
 
 const env = config.ENV;
@@ -107,6 +107,9 @@ class Server {
         
         //public folder expose
         this.app.use( express.static('public') );
+
+        //Routing morgan middleware+
+        this.app.use(morganMiddleware);
 
     }
 

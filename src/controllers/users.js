@@ -1,103 +1,123 @@
-const { response, request } = require('express');
-const bcryptjs = require('bcryptjs');
+const { response, request } = require("express");
+const bcryptjs = require("bcryptjs");
+const { logger } = require("../middlewares");
 
-const User = require('../models/user');
+const User = require("../models/user");
 
-const usersGet = async(req = request, res = response) => {
+const usersGet = async (req = request, res = response) => {
+  const { limit = 5, from = 0 } = req.query;
+  const query = { status: true };
 
-    const { limit = 5, from = 0 } = req.query;
-    const query = { status: true };
-
-    const [ total, users ] = await Promise.all([
-        User.countDocuments(query),
-        User.find(query)
-            .skip( Number( from ) )
-            .limit(Number( limit ))
+  try {
+    const [total, users] = await Promise.all([
+      User.countDocuments(query),
+      User.find(query).skip(Number(from)).limit(Number(limit)),
     ]);
 
     res.json({
-        total,
-        users
+      total,
+      users,
     });
-}
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send("Internal server error");
+  }
+};
 
-const usersGetById = async(req = request, res = response) => {
+const usersGetById = async (req = request, res = response) => {
+  const { id } = req.params;
 
-    const { id } = req.params;
-    
-    try {
-        const user = await User.findById(id);
-        res.json({
-            user
-        });
-    } catch (error) {
-        res.json(error)
-    }
-}
+  try {
+    const user = await User.findById(id);
+    res.json({
+      user,
+    });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json(error);
+  }
+};
 
-const usersPost = async(req, res = response) => {
-    
-    const { name, email, password, role, english_level, tech_skills, cv_link } = req.body;
-    console.log("🚀 ~ file: users.js:41 ~ usersPost ~ req.body:", req.body)
-    const user = new User({ name, email, password, role, english_level, tech_skills, cv_link });
-    console.log("🚀 ~ file: users.js:28 ~ usersPost ~ user:", user)
+const usersPost = async (req, res = response) => {
+  try {
+    const { name, email, password, role, english_level, tech_skills, cv_link } =
+      req.body;
+    console.log("🚀 ~ file: users.js:41 ~ usersPost ~ req.body:", req.body);
+    const user = new User({
+      name,
+      email,
+      password,
+      role,
+      english_level,
+      tech_skills,
+      cv_link,
+    });
+    console.log("🚀 ~ file: users.js:28 ~ usersPost ~ user:", user);
 
     // Encrypt password
     const salt = bcryptjs.genSaltSync();
-    user.password = bcryptjs.hashSync( password, salt );
+    user.password = bcryptjs.hashSync(password, salt);
 
     // Save on DB
     await user.save();
 
     res.json({
-        success:true,
-        user
+      success: true,
+      user,
     });
-}
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send("Internal server error");
+  }
+};
 
-const usersPut = async(req, res = response) => {
-
+const usersPut = async (req, res = response) => {
+  try {
     const { id } = req.params;
     const { _id, password, email, ...rest } = req.body;
 
-    if ( password ) {
-        // Encriptar la contraseña
-        const salt = bcryptjs.genSaltSync();
-        rest.password = bcryptjs.hashSync( password, salt );
+    if (password) {
+      // Encriptar la contraseña
+      const salt = bcryptjs.genSaltSync();
+      rest.password = bcryptjs.hashSync(password, salt);
     }
 
-    const user = await User.findByIdAndUpdate( id, rest );
+    const user = await User.findByIdAndUpdate(id, rest);
 
     res.json(user);
-}
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send("Internal server error");
+  }
+};
 
 const usersPatch = (req, res = response) => {
-    res.json({
-        msg: 'patch API - usuariosPatch'
-    });
-}
+  res.json({
+    msg: "patch API - usuariosPatch",
+  });
+};
 
-const usersDelete = async(req, res = response) => {
-
+const usersDelete = async (req, res = response) => {
+  try {
     const { id } = req.params;
 
-    // We can deleted physically 
+    // We can deleted physically
     // const usuario = await Usuario.findByIdAndDelete( id );
 
-    const user = await User.findByIdAndUpdate( id, { status: false } );
+    const user = await User.findByIdAndUpdate(id, { status: false });
 
-
-    res.json({user});
-}
-
-
-
+    res.json({ user });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send("Internal server error");
+  }
+};
 
 module.exports = {
-    usersGet,
-    usersGetById,
-    usersPost,
-    usersPut,
-    usersPatch,
-    usersDelete
-}
+  usersGet,
+  usersGetById,
+  usersPost,
+  usersPut,
+  usersPatch,
+  usersDelete,
+};

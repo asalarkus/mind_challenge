@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
+const { logger } = require('../middlewares');
 
 const User = require('../models/user');
 
@@ -49,7 +50,7 @@ const login = async(req, res = response) =>{
             uid: user._id
         })
     } catch (error) {
-        console.log("🚀 ~ file: auth.js:13 ~ login ~ error:", error)
+        logger.error(error);
         return res.status(500).json({
             msg:'Somenthing is wrong'
         })

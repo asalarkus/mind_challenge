@@ -12,5 +12,6 @@ module.exports = {
     DOMAIN: process.env.DOMAIN, //Production domain
     VERSION: process.env.VERSION, //API Version
     MONGO_ATLAS_URI: process.env.MONGO_ATLAS_URI, // Mongo Atlas URL Database Connection
-    SECRETORPRIVATEKEY: process.env.SECRETORPRIVATEKEY //JWT SERCRET KEY to sign token
+    SECRETORPRIVATEKEY: process.env.SECRETORPRIVATEKEY, //JWT SERCRET KEY to sign token,
+    LOGTAIL_TOKEN: process.env.LOGTAIL_TOKEN
 }
