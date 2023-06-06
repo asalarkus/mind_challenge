@@ -1,0 +1,24 @@
+[
+    {
+        "_id": "6478b86d2b4f421477d127f3",
+        "name": "Alonso Salcido",
+        "email": "asalcido@arkusnexus.com",
+        "password": "$2a$10$Df.9dH9guKLyyGbaBNIXS.RqJMDhl87g1vzPbZjDQcXcHgL.3/USu",
+        "role": "SUPER",
+        "status": true,
+        "cv_link": "https://www.linkedin.com/in/alonsosalcido/",
+        "english_level": 3,
+        "tech_skills": "JS, TS, Mongo, Express, Postgresql"
+    },
+    {
+        "_id": "647a1e1802e315969a633b80",
+        "name": "Jose Dominguez",
+        "email": "adominguez@arkusnexus.com",
+        "password": "$2a$10$mDLpMs.zzBoqJA.02FzD6uZdKjKoV.v0N0aUu9wzOeiR3syfXR/a6",
+        "english_level": 3,
+        "tech_skills": "JS, TS, Mongo, Express, Postgresql",
+        "cv_link": "https://www.linkedin.com/in/alonsosalcido/",
+        "role": "ADMIN",
+        "status": false
+    }
+]
