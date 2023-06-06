@@ -5,6 +5,9 @@ const RoleSchema = Schema({
         type: String,
         required: [true, 'Role is required']
     }
+},
+{
+    timestamps: true
 });
 
 
