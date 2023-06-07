@@ -3,6 +3,7 @@ const model = require('../../src/models/user');
 const httpMock = require('node-mocks-http');
 const mockUsersList = require('../mockdata/users.json');
 model.find = jest.fn();
+model.findById = jest.fn();
 let req, res, next;
 req = httpMock.createRequest();
 res = httpMock.createResponse();
@@ -28,6 +29,7 @@ describe("controller.usersGetById", ()=>{
         req.params.id = mockUsersList[0]._id;
         console.log("🚀 ~ file: controller.getusers.test.js:29 ~ test ~ req.params.id :", req.params.id )
         model.findById.mockReturnValue(mockUsersList[0]);
-        await controller.usersGetById(req,res,next)
+        await controller.usersGetById(req,res,next);
+        expect(model.findById).toHaveBeenCalledWith(req.params.id);
     })
 })
