@@ -71,7 +71,8 @@ class Server {
             index: `/api/${version}/index`,
             swagger: `/api/${version}/docs`,
             users: `/api/${version}/users`,
-            auth: `/api/${version}/auth`
+            auth: `/api/${version}/auth`,
+            accounts: `/api/${version}/accounts`
         }
 
         //Connect to database
@@ -121,6 +122,7 @@ class Server {
         this.app.use(this.paths.swagger, swagger_ui.serve, swagger_ui.setup(this.swagger_docs, swagger_options));
         this.app.use(this.paths.index, require('../routes/index'));
         this.app.use( this.paths.users, require('../routes/users'));
+        this.app.use( this.paths.accounts, require('../routes/accounts'));
     }
 
     /**

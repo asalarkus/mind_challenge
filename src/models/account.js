@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 
+
 const AccountSchema = Schema({
     name: {
         type: String,
@@ -10,12 +11,14 @@ const AccountSchema = Schema({
         require: [true, 'Customer name is required']
     },
     operations_manager: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         require: [true, 'Manager is required']
     },
-    team: {
-        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        required: [true, 'Team is required']
+    team: {  
+        type: Schema.Types.ObjectId, 
+        ref: 'Team', 
+        required: [false, 'Team is required']
     }
 },
 {
