@@ -4,6 +4,20 @@ const { logger } = require("../middlewares");
 
 const User = require("../models/user");
 
+const allUsersGet = async (req = request, res = response ) =>{
+  try {
+    const allUsers = await User.find({});
+    console.log(allUsers);
+    if( allUsers && allUsers.length > 0){
+      res.status(200).json(allUsers);
+    }else{
+      res.status(404).json()  
+    }
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
 const usersGet = async (req = request, res = response) => {
   const { limit = 5, from = 0 } = req.query;
   const query = { status: true };
@@ -14,9 +28,8 @@ const usersGet = async (req = request, res = response) => {
       User.find(query).skip(Number(from)).limit(Number(limit)),
     ]);
 
-    res.json({
-      total,
-      users,
+    res.status(200).json({
+      users
     });
   } catch (error) {
     logger.error(error);
@@ -29,8 +42,8 @@ const usersGetById = async (req = request, res = response) => {
 
   try {
     const user = await User.findById(id);
-    res.json({
-      user,
+    res.status(200).json({
+      ...user
     });
   } catch (error) {
     logger.error(error);
@@ -114,6 +127,7 @@ const usersDelete = async (req, res = response) => {
 };
 
 module.exports = {
+  allUsersGet,
   usersGet,
   usersGetById,
   usersPost,
