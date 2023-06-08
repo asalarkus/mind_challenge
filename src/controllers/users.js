@@ -43,7 +43,7 @@ const usersGetById = async (req = request, res = response) => {
   try {
     const user = await User.findById(id);
     res.status(200).json({
-      ...user
+      user
     });
   } catch (error) {
     logger.error(error);
