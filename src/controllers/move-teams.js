@@ -6,11 +6,9 @@ const Team = require("../models/team");
 
 const allMovementsGet = async (req = request, res = response) => {
   const { search_field, search_value } = req.query;
-
-  console.log('::queryObj:::', query);
   //res.json(query);
   try {
-    const allMovements = await MoveTeam.find(query);
+    const allMovements = await MoveTeam.find({});
     console.log(allMovements);
     if (allMovements && allMovements.length > 0) {
       res.status(200).json(allMovements);

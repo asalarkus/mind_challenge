@@ -62,7 +62,7 @@ const addUserToTeam = async ( req, res = response ) =>{
     try {
       const team = await Team.updateOne(
         { _id: teamId },
-        { $push: {  users: userId} },
+        { $push: {  users: userId } },
         { new: true }
       );
       console.log("🚀 ~ file: teams.js:65 ~ addUserToTeam ~ team:", team)
@@ -77,56 +77,43 @@ const addUserToTeam = async ( req, res = response ) =>{
   }
 }
 
-//TODO: Users can only exists on one tema
-const changeUserToNewTeam = async ( req, res = response ) =>{
-  try {
+//TODO: Users can only exists on one team
+const changeUserToNewTeam = async ( req, res = response ) => {
     const { userId, newTeamId } = req.body;
     const user = await User.findById(userId);
-    console.log("🚀 ~ file: teams.js:87 ~ changeUserToNewTeam ~ user:", user);
-      let queryRemoveOldTeam = { _id: user.team };
-      let userToRemove = {  users: user._id };
-      let queryAddNewTeam = { _id: newTeamId };
-      let userToAdd = {  users: user._id };
-      let filter = { _id: user._id };
-      let update = { team: newTeamId };
-      const fromTeamName = await Team.findById(user.team);
-      const toTeamName = await Team.findById(newTeamId);
-      let endDatePlus30 = new Date(); // Now
-      endDatePlus30.setDate(endDatePlus30.getDate() + 60); // Set now + 30 days as the new date
+    let queryRemoveOldTeam = { _id: user.team };
+    let userToRemove = {  users: user._id };
+    let queryAddNewTeam = { _id: newTeamId };
+    let userToAdd = {  users: user._id };
+    let update = { team: newTeamId };
+    const fromTeamName = await Team.findById(user.team);
+    const toTeamName = await Team.findById(newTeamId);
+    let endDatePlus30 = new Date(); // Now
+    endDatePlus30.setDate(endDatePlus30.getDate() + 60); // Set now + 30 days as the new date
 
-      const movement = new MoveTeam({
-          userId, 
-          fromTeamId: user.team,
-          fromTeamName: fromTeamName.name,
-          toTeamId: newTeamId,
-          toTeamName: toTeamName.name,
-          startDate: new Date(),
-          endDate: endDatePlus30
-      });
+    const movement = new MoveTeam({
+        userId, 
+        fromTeamId: user.team,
+        fromTeamName: fromTeamName.name,
+        toTeamId: newTeamId,
+        toTeamName: toTeamName.name,
+        startDate: new Date(),
+        endDate: endDatePlus30
+    });
 
-      try {
-        const [removeOldTeam, addToNewTeam, updateUserTeam] = await Promise.all([
-          await Team.updateOne(
-              queryRemoveOldTeam,
-            { $pull:  userToRemove },
-            { new: true }
-          ),
-          await Team.updateOne(
-              queryAddNewTeam,
-            { $push: userToAdd },
-            { new: true }
-          ),
-          await User.findByIdAndUpdate(user._id, update),
-          await movement.save()
-        ]);
-        res.status(200).json({ success: true,  removeOldTeam, addToNewTeam, updateUserTeam}); 
-      } catch (error) {
-        res.status(500).json(error)
-      }
-  } catch (error) {
-    logger.error(error);
-    res.status(500).send("Internal server error");
-  }
+    try {
+      let [removeOldTeam, addToNewTeam, updateUserTeam] = await Promise.all([
+        Team.updateOne( queryRemoveOldTeam, { $pull:  userToRemove }, { new: true } ),
+        Team.updateOne( queryAddNewTeam, { $push: userToAdd }, { new: true } ),
+        User.findByIdAndUpdate(user._id, update),
+        movement.save()
+      ]);
+
+      return res.status(200).json({ success: true,  removeOldTeam, addToNewTeam, updateUserTeam}); 
+    } catch (error) {
+      logger.error(error);
+      res.status(500).send("Internal server error");
+    }
 }
 
 const findTeamByName = async (req, res = response)=>{

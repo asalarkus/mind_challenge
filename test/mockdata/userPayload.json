@@ -1,0 +1,9 @@
+{
+    "name": "Ximena Salcido",
+    "email": "xsalcido@arkusnexus.com",
+    "password": "hola123",
+    "role": "ADMIN",
+    "english_level": 3,
+    "tech_skills": "JS, TS, Mongo, Express, Postgresql",
+    "cv_link": "https://www.linkedin.com/in/alonsosalcido/"
+  }
