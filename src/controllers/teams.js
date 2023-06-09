@@ -2,6 +2,7 @@ const { response, request } = require("express");
 const { logger } = require("../middlewares");
 
 const Team = require("../models/team");
+const MoveTeam = require("../models/move-team");
 const User = require("../models/user");
 
 const allTeamsGet = async (req = request, res = response) => {
@@ -80,24 +81,29 @@ const addUserToTeam = async ( req, res = response ) =>{
 const changeUserToNewTeam = async ( req, res = response ) =>{
   try {
     const { userId, newTeamId } = req.body;
-    console.log("🚀 ~ file: teams.js:58 ~ addUserToTeam ~ req.body:", req.body)
-    try {
-    //TODO: Search user if exists on database
     const user = await User.findById(userId);
-    console.log("🚀 ~ file: teams.js:87 ~ changeUserToNewTeam ~ user:", user)
-    //TODO: Remove user from actual team
+    console.log("🚀 ~ file: teams.js:87 ~ changeUserToNewTeam ~ user:", user);
       let queryRemoveOldTeam = { _id: user.team };
-      console.log("🚀 ~ file: teams.js:91 ~ changeUserToNewTeam ~ queryRemoveOldTeam:", queryRemoveOldTeam)
       let userToRemove = {  users: user._id };
-      console.log("🚀 ~ file: teams.js:93 ~ changeUserToNewTeam ~ userToRemove:", userToRemove)
       let queryAddNewTeam = { _id: newTeamId };
-      console.log("🚀 ~ file: teams.js:94 ~ changeUserToNewTeam ~ queryAddNewTeam:", queryAddNewTeam)
       let userToAdd = {  users: user._id };
-      console.log("🚀 ~ file: teams.js:96 ~ changeUserToNewTeam ~ userToAdd:", userToAdd)
       let filter = { _id: user._id };
-      console.log("🚀 ~ file: teams.js:99 ~ changeUserToNewTeam ~ filter:", filter)
       let update = { team: newTeamId };
-      console.log("🚀 ~ file: teams.js:101 ~ changeUserToNewTeam ~ update:", update)
+      const fromTeamName = await Team.findById(user.team);
+      const toTeamName = await Team.findById(newTeamId);
+      let endDatePlus30 = new Date(); // Now
+      endDatePlus30.setDate(endDatePlus30.getDate() + 60); // Set now + 30 days as the new date
+
+      const movement = new MoveTeam({
+          userId, 
+          fromTeamId: user.team,
+          fromTeamName: fromTeamName.name,
+          toTeamId: newTeamId,
+          toTeamName: toTeamName.name,
+          startDate: new Date(),
+          endDate: endDatePlus30
+      });
+
       try {
         const [removeOldTeam, addToNewTeam, updateUserTeam] = await Promise.all([
           await Team.updateOne(
@@ -110,16 +116,13 @@ const changeUserToNewTeam = async ( req, res = response ) =>{
             { $push: userToAdd },
             { new: true }
           ),
-          await User.findByIdAndUpdate(user._id, update)
+          await User.findByIdAndUpdate(user._id, update),
+          await movement.save()
         ]);
         res.status(200).json({ success: true,  removeOldTeam, addToNewTeam, updateUserTeam}); 
       } catch (error) {
         res.status(500).json(error)
       }
-
-    } catch (error) {
-      res.status(404).json(error);
-    }
   } catch (error) {
     logger.error(error);
     res.status(500).send("Internal server error");

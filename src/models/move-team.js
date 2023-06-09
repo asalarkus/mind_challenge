@@ -26,9 +26,9 @@ const ToTeamSchema = Schema({
 
 const MoveTeamsSchema = Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
-    fromTeamId: { type: String, required: [true, 'From Team Id is required'] },
+    fromTeamId: { type: Schema.Types.ObjectId, ref: 'Team', required: [true, 'From Team Id is required'] },
     fromTeamName: { type: String, required: [true, 'From Team Name is required'] },
-    toTeamId: { type: String, required: [true, 'To Team Id is required'] },
+    toTeamId: { type: Schema.Types.ObjectId, ref: 'Team', required: [true, 'To Team Id is required'] },
     toTeamName: { type: String, required: [true, 'To Team Name is required'] },
     startDate: { type: Date, required: [true, 'startDate is required'] },
     endDate: { type: Date, required: [true, 'endDate is required'] }

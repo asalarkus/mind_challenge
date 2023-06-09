@@ -45,18 +45,21 @@ const createMovementTeam = async (req, res = response) => {
     let endDatePlus30 = new Date(); // Now
     endDatePlus30.setDate(endDatePlus30.getDate() + 60); // Set now + 30 days as the new date
 
-    try {
-      const [fromTeamName, toTeamName] = await Promise.all([
-        Team.find({_id: fromTeamId}),
-        Team.find({_id: toTeamId}),
-      ]);t 
+      let fromTeamIdRef = { _id: fromTeamId };
+      console.log("🚀 ~ file: move-teams.js:51 ~ createMovementTeam ~ fromTeamId:", fromTeamIdRef)
+      let toTeamIdRef = { _id: toTeamId };      
+      console.log("🚀 ~ file: move-teams.js:54 ~ createMovementTeam ~ toTeamId:", toTeamIdRef)
+      const fromTeamName = await Team.findById(fromTeamId);
+      const toTeamName = await Team.findById(toTeamId);
+      console.log("🚀 ~ file: move-teams.js:53 ~ createMovementTeam ~ fromTeamName:", fromTeamName.name)
+      console.log("🚀 ~ file: move-teams.js:50 ~ createMovementTeam ~ toTeamName:", toTeamName.name)
   
       const movement = new MoveTeam({
           userId, 
           fromTeamId,
-          fromTeamName,
+          fromTeamName: fromTeamName.name,
           toTeamId,
-          toTeamName,
+          toTeamName: toTeamName.name,
           startDate: new Date(),
           endDate: endDatePlus30
       });
@@ -66,9 +69,7 @@ const createMovementTeam = async (req, res = response) => {
       await movement.save();
   
       res.status(200).json({ success: true, movement });
-    } catch (error) {
-      res.status(404).json({msg: 'Team Name not found'}) 
-    }
+
   } catch (error) {
     logger.error(error);
     res.status(500).send("Internal server error");
