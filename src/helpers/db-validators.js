@@ -13,6 +13,7 @@ const emailExists = async( email = '' ) => {
 
     // Verificar if email exists
     const existsEmail = await User.findOne({ email });
+    console.log("🚀 ~ file: db-validators.js:16 ~ emailExists ~ existsEmail:", existsEmail)
     if ( existsEmail ) {
         throw new Error(`This email: ${ email }, is already registered`);
     }

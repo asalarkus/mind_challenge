@@ -7,7 +7,7 @@ const TeamSchema = Schema({
     },
     users: { 
         type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-        required: [true, 'User is required']
+        required: [false, 'User is required']
     }
 },
 {

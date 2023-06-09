@@ -73,7 +73,8 @@ class Server {
             users: `/api/${version}/users`,
             auth: `/api/${version}/auth`,
             accounts: `/api/${version}/accounts`,
-            teams: `/api/${version}/teams`
+            teams: `/api/${version}/teams`,
+            movements: `/api/${version}/movements`
         }
 
         //Connect to database
@@ -125,6 +126,7 @@ class Server {
         this.app.use( this.paths.users, require('../routes/users'));
         this.app.use( this.paths.accounts, require('../routes/accounts'));
         this.app.use( this.paths.teams, require('../routes/teams'));
+        this.app.use( this.paths.movements, require('../routes/move-teams'));
     }
 
     /**

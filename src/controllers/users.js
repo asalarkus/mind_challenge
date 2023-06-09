@@ -3,6 +3,7 @@ const bcryptjs = require("bcryptjs");
 const { logger } = require("../middlewares");
 
 const User = require("../models/user");
+const Team = require("../models/team");
 
 const allUsersGet = async (req = request, res = response ) =>{
   try {
@@ -56,28 +57,51 @@ const usersPost = async (req, res = response) => {
     const { name, email, password, role, english_level, tech_skills, cv_link } =
       req.body;
     console.log("🚀 ~ file: users.js:41 ~ usersPost ~ req.body:", req.body);
-    const user = new User({
-      name,
-      email,
-      password,
-      role,
-      english_level,
-      tech_skills,
-      cv_link,
-    });
-    console.log("🚀 ~ file: users.js:28 ~ usersPost ~ user:", user);
 
-    // Encrypt password
-    const salt = bcryptjs.genSaltSync();
-    user.password = bcryptjs.hashSync(password, salt);
+    //Search Default Team, and add id to new user
+    try {
+      const defaultTeam =  await Team.find({ name: 'Default' });
+      console.log("🚀 ~ file: users.js:62 ~ usersPost ~ defaultTeam:", defaultTeam)
 
-    // Save on DB
-    await user.save();
+      const u = {
+        name,
+        email,
+        password,
+        role,
+        english_level,
+        tech_skills,
+        cv_link,
+        team: defaultTeam[0]._id
+      }
 
-    res.json({
-      success: true,
-      user,
-    });
+      console.log("🚀 ~ file: users.js:64 ~ usersPost ~ u:", u)
+
+      const user = new User(u);
+      console.log("🚀 ~ file: users.js:28 ~ usersPost ~ user:", user);
+
+      // Encrypt password
+      const salt = bcryptjs.genSaltSync();
+      user.password = bcryptjs.hashSync(password, salt);
+
+      // Save on DB
+      await user.save();
+
+      //Add new userid to team 
+      //TODO: Add Validation if exists on default team don't put over again
+      const team = await Team.updateOne(
+        { _id: defaultTeam[0]._id },
+        { $push: {  users: user._id }},
+        { new: true }
+      );
+
+      res.json({
+        success: true,
+        user,
+        team
+      }); 
+    } catch (error) {
+      res.status(404).send(error);
+    }
   } catch (error) {
     logger.error(error);
     res.status(500).send("Internal server error");
