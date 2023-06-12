@@ -40,12 +40,12 @@ const usersGet = async (req = request, res = response) => {
 
 const usersGetById = async (req = request, res = response) => {
   const { id } = req.params;
+  console.log("🚀 ~ file: users.js:43 ~ usersGetById ~ id:", id)
 
   try {
     const user = await User.findById(id);
-    res.status(200).json({
-      user
-    });
+    console.log("🚀 ~ file: users.js:47 ~ usersGetById ~ user:", user)
+    res.json(user);
   } catch (error) {
     logger.error(error);
     res.status(500).json(error);
