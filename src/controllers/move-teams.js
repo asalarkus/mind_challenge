@@ -5,11 +5,21 @@ const MoveTeam = require("../models/move-team");
 const Team = require("../models/team");
 
 const allMovementsGet = async (req = request, res = response) => {
+  console.log(req.query);
+
   const { search_field, search_value } = req.query;
+
+  let allMovements = '';
   //res.json(query);
   try {
-    const allMovements = await MoveTeam.find({});
-    console.log(allMovements);
+    if(req.query !== {}){
+      console.log("Inside if")
+      allMovements = await MoveTeam.find().where(search_field).equals(search_value);
+      console.log("🚀 ~ file: move-teams.js:18 ~ allMovementsGet ~ allMovements:", allMovements)
+    }else{
+      allMovements = await MoveTeam.find({});
+    }
+    
     if (allMovements && allMovements.length > 0) {
       res.status(200).json(allMovements);
     } else {

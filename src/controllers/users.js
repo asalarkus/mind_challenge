@@ -113,6 +113,10 @@ const usersPut = async (req, res = response) => {
     const { id } = req.params;
     const { _id, password, email, ...rest } = req.body;
 
+    if( email ){
+      res.status(404).json({msg: 'You are not allowed to change your email or any user email'})
+    }
+
     if (password) {
       // Encriptar la contraseña
       const salt = bcryptjs.genSaltSync();
