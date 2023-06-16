@@ -7,8 +7,8 @@ const User = require("../models/user");
 
 const allTeamsGet = async (req = request, res = response) => {
   try {
-    const allTeams = await Team.find({});
-    console.log(allTeams);
+    const allTeams = await Team.find()
+    .populate([{path: 'users', select: ['name', 'email']}]);
     if (allTeams && allTeams.length > 0) {
       res.status(200).json(allTeams);
     } else {
@@ -23,7 +23,8 @@ const teamGetById = async (req = request, res = response) => {
   const { id } = req.params;
 
   try {
-    const team = await Team.findById(id);
+    const team = await Team.findById(id)
+    .populate([{path: 'users', select: ['name', 'email']}]);
     res.status(200).json({
       team
     });
@@ -77,7 +78,6 @@ const addUserToTeam = async ( req, res = response ) =>{
   }
 }
 
-//TODO: Users can only exists on one team
 const changeUserToNewTeam = async ( req, res = response ) => {
     const { userId, newTeamId } = req.body;
     const user = await User.findById(userId);
@@ -125,7 +125,6 @@ const findTeamByName = async (req, res = response)=>{
   } catch (error) {
     console.log(error);
   }
-
 } 
 
 module.exports = {

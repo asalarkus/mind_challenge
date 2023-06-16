@@ -2,6 +2,13 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const router = Router();
 
+const {
+    validateFields,
+    validateJWT,
+    isSuperAdminRole,
+    hasRole
+} = require('../middlewares')
+
 const { 
     allTeamsGet,
     teamGetById,
@@ -37,7 +44,11 @@ const {
  *                           message NO AUTHORIZE
  *
  */
-router.get('/', [], allTeamsGet);
+router.get('/', [
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")
+], allTeamsGet);
 
 /**
  * @swagger
@@ -73,8 +84,9 @@ router.get('/', [], allTeamsGet);
  *
  */
 router.get('/:id', [
-   /*validateJWT,
-    validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")
 ], teamGetById );
 
 
@@ -130,8 +142,9 @@ router.get('/:id', [
  *           example: [6479117f686ed5dee959ba8b,6479161f437436c78d20495f,6479168d437436c78d204967]
  */
 router.post('/',[
-    /*validateJWT,
-    validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")
 ], createTeam );
 
 /**
@@ -186,8 +199,9 @@ router.post('/',[
  *           example: 6478b86d2b4f421477d127f3
  */
 router.patch('/', [
-    /*validateJWT,
-    validateFields*/    
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")    
 ], addUserToTeam)
 
 
@@ -225,8 +239,9 @@ router.patch('/', [
  *
  */
 router.get('/findby/:name', [
-    /*validateJWT,
-     validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")
  ], findTeamByName );
 
 
@@ -283,8 +298,9 @@ router.get('/findby/:name', [
  */
 
 router.post('/swap',[
-    /*validateJWT,
-    validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")
 ], changeUserToNewTeam );
  
 

@@ -2,6 +2,13 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const router = Router();
 
+const {
+    validateFields,
+    validateJWT,
+    isSuperAdminRole,
+    hasRole
+} = require('../middlewares')
+
 const { 
     allMovementsGet,
     movementGetById,
@@ -34,7 +41,11 @@ const {
  *                           message NO AUTHORIZE
  *
  */
-router.get('/', [], allMovementsGet);
+router.get('/', [
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")
+], allMovementsGet);
 
 /**
  * @swagger
@@ -70,8 +81,9 @@ router.get('/', [], allMovementsGet);
  *
  */
 router.get('/:id', [
-   /*validateJWT,
-    validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),
 ], movementGetById );
 
 
@@ -165,8 +177,9 @@ router.get('/:id', [
  *           example: CSharperos
  */
 router.post('/',[
-    /*validateJWT,
-    validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN")
 ], createMovementTeam );
 
 module.exports = router;

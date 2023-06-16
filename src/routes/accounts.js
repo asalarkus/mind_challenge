@@ -1,6 +1,12 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const router = Router();
+const {
+    validateFields,
+    validateJWT,
+    isSuperAdminRole,
+    hasRole
+} = require('../middlewares')
 
 const { allAccountsGet, createAccount, accountGetById } = require('../controllers/accounts');
 
@@ -31,7 +37,11 @@ const { allAccountsGet, createAccount, accountGetById } = require('../controller
  *                           message NO AUTHORIZE
  *
  */
-router.get('/', [], allAccountsGet);
+router.get('/', [
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),
+], allAccountsGet);
 
 /**
  * @swagger
@@ -67,8 +77,9 @@ router.get('/', [], allAccountsGet);
  *
  */
 router.get('/:id', [
-   /*validateJWT,
-    validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),
 ], accountGetById );
 
 
@@ -132,8 +143,9 @@ router.get('/:id', [
  *           example: 6478b86d2b4f421477d127f3
  */
 router.post('/',[
-    /*validateJWT,
-    validateFields*/
+    validateJWT,
+    isSuperAdminRole,
+    hasRole("SUPER", "ADMIN"),
 ], createAccount );
 
 module.exports = router;
