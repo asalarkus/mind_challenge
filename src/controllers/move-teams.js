@@ -1,23 +1,44 @@
 const { response, request } = require("express");
 const { logger } = require("../middlewares");
+const addHours = require("date-fns/addHours");
 
 const MoveTeam = require("../models/move-team");
 const Team = require("../models/team");
 
+const convertArrayToJson = async (query)=>{
+  const filter = {};
+  for (let i = 0; i < query.search_field.length; i++) {
+    if(query.search_field[i] === 'startDate' ||  query.search_field[i] === 'endDate'){
+      let gte = new Date(query.search_value[i]);
+      let lt = new Date(query.search_value[i]);
+      let newLt = addHours(lt, 23);
+      filter[query.search_field[i]] = { $gte: gte, $lt: newLt };
+    }else{
+      filter[query.search_field[i]] = query.search_value[i];
+    }
+  }
+  return filter;
+}
+
 const allMovementsGet = async (req = request, res = response) => {
-  console.log(req.query);
+  console.log(typeof req.query);
 
   const { search_field, search_value } = req.query;
 
   let allMovements = '';
+  let filters = {};
   //res.json(query);
   try {
-    if(req.query !== {}){
+    if(typeof req.query === "object" ){
       console.log("Inside if")
-      allMovements = await MoveTeam.find().where(search_field).equals(search_value);
+      if(Array.isArray(search_field)){
+        filters = await convertArrayToJson(req.query);
+      }
+      allMovements = await MoveTeam.find(filters)
+      .populate([{path: 'userId', select: ['name', 'email']}, {path:'fromTeamId', select: 'name users'}, {path: 'toTeamId', select: ['name', 'users']}]);
       console.log("🚀 ~ file: move-teams.js:18 ~ allMovementsGet ~ allMovements:", allMovements)
     }else{
-      allMovements = await MoveTeam.find({});
+      allMovements = await MoveTeam.find().populate([{path: 'userId', select: ['name', 'email']}, {path:'fromTeamId', select: ['name', 'users']}, {path: 'toTeamId', select: ['name', 'users']}]);
     }
     
     if (allMovements && allMovements.length > 0) {

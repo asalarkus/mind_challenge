@@ -1,0 +1,43 @@
+[
+    {
+        "_id": {
+          "$oid": "64810de8aa03a8d5d4cfd0fc"
+        },
+        "name": "MYKONOS",
+        "customer_name": "Jose Ortiz",
+        "operations_manager": {
+          "$oid": "6478ecd6ea616119e4afa809"
+        },
+        "team": {
+          "$oid": "6478b86d2b4f421477d127f3"
+        },
+        "createdAt": {
+          "$date": "2023-06-07T23:08:24.686Z"
+        },
+        "updatedAt": {
+          "$date": "2023-06-07T23:08:24.686Z"
+        },
+        "__v": 0
+      },
+      {
+        "_id": {
+          "$oid": "64810e89aa03a8d5d4cfd0fe"
+        },
+        "name": "FRANCE",
+        "customer_name": "Jorge Random",
+        "operations_manager": {
+          "$oid": "6478b86d2b4f421477d127f3"
+        },
+        "team": {
+          "$oid": "6478b86d2b4f421477d127f3"
+        },
+        "createdAt": {
+          "$date": "2023-06-07T23:11:05.163Z"
+        },
+        "updatedAt": {
+          "$date": "2023-06-07T23:11:05.163Z"
+        },
+        "__v": 0
+      }
+
+]
