@@ -1,0 +1,60 @@
+[
+    {
+        "_id": {
+            "$oid": "648363f68fa65a9680fdee08"
+        },
+        "userId": {
+            "$oid": "648352e25e043c3575f39b75"
+        },
+        "fromTeamId": {
+            "$oid": "648337b84ea1c04a474bbbb0"
+        },
+        "fromTeamName": "Noders",
+        "toTeamId": {
+            "$oid": "648337c04ea1c04a474bbbb2"
+        },
+        "toTeamName": "CSharperos",
+        "startDate": {
+            "$date": "2023-06-09T17:40:06.289Z"
+        },
+        "endDate": {
+            "$date": "2023-08-08T17:40:03.931Z"
+        },
+        "createdAt": {
+            "$date": "2023-06-09T17:40:06.298Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-09T17:40:06.298Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "648367d46dbd8e8eadf41071"
+        },
+        "userId": {
+            "$oid": "648352e25e043c3575f39b75"
+        },
+        "fromTeamId": {
+            "$oid": "648337c04ea1c04a474bbbb2"
+        },
+        "fromTeamName": "CSharperos",
+        "toTeamId": {
+            "$oid": "648337cb4ea1c04a474bbbb4"
+        },
+        "toTeamName": "Javeros",
+        "startDate": {
+            "$date": "2023-06-09T17:56:36.953Z"
+        },
+        "endDate": {
+            "$date": "2023-08-08T17:56:36.953Z"
+        },
+        "createdAt": {
+            "$date": "2023-06-09T17:56:37.150Z"
+        },
+        "updatedAt": {
+            "$date": "2023-06-09T17:56:37.150Z"
+        },
+        "__v": 0
+    }
+]

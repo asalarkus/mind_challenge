@@ -1,35 +1,37 @@
 //Course https://www.udemy.com/course/master-jest-expressjs-nodejs-2020-may/
-const controller = require('../../../src/controllers/users');
-const model = require('../../../src/models/user');
+const controller = require('../../../src/controllers/accounts');
+const model = require('../../../src/models/account');
+const bcrypt = require('bcryptjs');
 const httpMock = require('node-mocks-http');
-const mockUser = require('../../mockdata/users.json');
-model.findByIdAndUpdate = jest.fn();
+const mockAccount = require('../../mockdata/accounts.json');
+model.save = jest.fn();
+model.find = jest.fn();
+model.findOne = jest.fn();
 let req, res, next;
 
 beforeEach(()=>{
+    model.save.mockClear();
+    model.findOne.mockClear();
     req = httpMock.createRequest();
-    req.params.id = mockUser[0]._id;
     res = httpMock.createResponse();
     next = null;
+    req.body = { ...mockAccount }
 });
 
 afterEach(()=>{
-    model.findByIdAndUpdate.mockClear();
+    model.find.mockClear();
 })
 
-describe("controller.usersDelete", ()=>{
-    test("soft delete Users function is defined", () =>{
-        expect(typeof controller.usersDelete).toBe('function')
+describe("controller.createAccount", ()=>{
+    test("controller.createAccount is defined", () =>{
+        expect(typeof controller.createAccount).toBe('function')
     });
 
-    test("soft delete valid user on database", async() =>{
-        model.findByIdAndUpdate.mockResolvedValue(mockUser[0]);
-        await controller.usersDelete(req, res, next);
-        expect(model.findByIdAndUpdate).toBeCalledWith(mockUser[0]._id);
-        expect(res.statusCode).toEqual(200);
-        expect(res._getJSONData()).toStrictEqual(mockUser[0]);
+    test("create a valid account", async ()=>{
+        model.save.mockReturnValue(mockUser);
+        await controller.createAccount(req, res. next);
+        expect(res.statusCode).toBe(201);
+        expect(res._getJSONData()).toStrictEqual(mockAccount);
+        expect(model.save).toBeCalledWith({...mockAccount})
     });
-
-
 })
-
