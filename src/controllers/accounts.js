@@ -5,7 +5,8 @@ const Account = require("../models/account");
 
 const allAccountsGet = async (req = request, res = response) => {
   try {
-    const allAccounts = await Account.find({});
+    const allAccounts = await Account.find()
+    .populate([{path: 'operations_manager', select: ['name', 'email']}, {path:'team', select: 'name users'}]);
     console.log(allAccounts);
     if (allAccounts && allAccounts.length > 0) {
       res.status(200).json(allAccounts);
@@ -21,9 +22,10 @@ const accountGetById = async (req = request, res = response) => {
   const { id } = req.params;
 
   try {
-    const account = await Account.findById(id);
+    const account = await Account.findById(id)
+    .populate([{path: 'operations_manager', select: ['name', 'email']}, {path:'team', select: 'name users'}]);
     res.status(200).json({
-      ...account
+      account
     });
   } catch (error) {
     logger.error(error);

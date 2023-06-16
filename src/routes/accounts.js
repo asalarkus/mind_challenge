@@ -6,7 +6,7 @@ const { allAccountsGet, createAccount, accountGetById } = require('../controller
 
 /**
  * @swagger
- * /api/v1/acccounts:
+ * /api/v1/accounts:
  *   get:
  *     summary: Allow to consult all account exists on databsae.
  *     tags:
@@ -35,7 +35,7 @@ router.get('/', [], allAccountsGet);
 
 /**
  * @swagger
- * /api/v1/acccounts/{uid}:
+ * /api/v1/accounts/{uid}:
  *   get:
  *     summary: Allow to consult specific account data by uid.
  *     parameters:
